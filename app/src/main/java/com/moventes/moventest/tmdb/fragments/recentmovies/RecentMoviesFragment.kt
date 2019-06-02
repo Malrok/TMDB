@@ -10,27 +10,28 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.models.Movie
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.network.TmdbService
-import okhttp3.OkHttpClient
+import dagger.android.support.AndroidSupportInjection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import javax.inject.Inject
 
 
 class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var recycler: RecyclerView
-    private lateinit var tmdbService: TmdbService
+
+    @Inject
+    lateinit var tmdbService: TmdbService
 
     override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
         super.onAttach(context)
         if (context is MainActivity) {
             listener = context
@@ -55,32 +56,32 @@ class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
 
     fun fillList() {
 
-        val httpClientBuilder = OkHttpClient.Builder()
-
-        httpClientBuilder.addInterceptor { chain ->
-            val original = chain.request()
-            val originalHttpUrl = original.url()
-
-            val url = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key", "48d02d2803f669be5643367e3307dd43")
-                .build()
-
-            // Request customization: add request headers
-            val requestBuilder = original.newBuilder()
-                .url(url)
-
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(httpClientBuilder.build())
-            .build()
-
-        tmdbService = retrofit.create<TmdbService>(TmdbService::class.java)
+//        val httpClientBuilder = OkHttpClient.Builder()
+//
+//        httpClientBuilder.addInterceptor { chain ->
+//            val original = chain.request()
+//            val originalHttpUrl = original.url()
+//
+//            val url = originalHttpUrl.newBuilder()
+//                .addQueryParameter("api_key", "48d02d2803f669be5643367e3307dd43")
+//                .build()
+//
+//            // Request customization: add request headers
+//            val requestBuilder = original.newBuilder()
+//                .url(url)
+//
+//            val request = requestBuilder.build()
+//            chain.proceed(request)
+//        }
+//
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("https://api.themoviedb.org/3/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//            .client(httpClientBuilder.build())
+//            .build()
+//
+//        tmdbService = retrofit.create<TmdbService>(TmdbService::class.java)
 
         val now = Calendar.getInstance()
         val before = Calendar.getInstance()
