@@ -1,6 +1,8 @@
 package com.moventes.moventest.tmdb.fragments.recentmovies
 
 
+import android.content.Context
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +14,10 @@ import com.moventes.moventest.tmdb.fragments.recentmovies.RecentMoviesFragment.O
 import com.moventes.moventest.tmdb.models.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_recent_movie_item.view.*
+import javax.inject.Inject
 
 class RecentMoviesRecyclerViewAdapter(
+    private var context: Context,
     private val movies: List<Movie>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<RecentMoviesRecyclerViewAdapter.ViewHolder>() {
@@ -23,8 +27,6 @@ class RecentMoviesRecyclerViewAdapter(
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as Movie
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
         }
     }
@@ -38,7 +40,7 @@ class RecentMoviesRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = movies[position]
         holder.title.text = item.title
-        holder.description.text = item.overview
+        holder.description.text = DateUtils.formatDateTime(context, item.release.time, DateUtils.FORMAT_SHOW_DATE)
 
         Picasso.get().load(item.posterPath).into(holder.poster)
 

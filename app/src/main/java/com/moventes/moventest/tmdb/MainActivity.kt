@@ -13,13 +13,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity(), RecentMoviesFragment.OnListFragmentInteractionListener {
 
 
-    var tmdbService: TmdbService? = null
+//    lateinit var tmdbService: TmdbService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val httpClientBuilder = OkHttpClient.Builder()
+//        val httpClientBuilder = OkHttpClient.Builder()
 
 //        val interceptor = HttpLoggingInterceptor()
 //        interceptor.level = HttpLoggingInterceptor.Level.BODY

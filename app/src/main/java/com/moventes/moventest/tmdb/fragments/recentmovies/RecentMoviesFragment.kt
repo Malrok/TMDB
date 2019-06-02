@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.models.Movie
 import com.moventes.moventest.tmdb.models.TmdbResult
@@ -26,19 +27,13 @@ import java.util.*
 class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
 
     private var listener: OnListFragmentInteractionListener? = null
-    private var recycler: RecyclerView? = null
-    private var tmdbService: TmdbService? = null
+    private lateinit var recycler: RecyclerView
+    private lateinit var tmdbService: TmdbService
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is MainActivity) {
             listener = context
-
-//            context.tmdbService?.getRecentMovies(
-//                String.format("yyyy-MM-dd", Calendar.getInstance()),
-//                String.format("yyyy-MM-dd", Calendar.getInstance().add(Calendar.DAY_OF_MONTH, -30))
-//            )?.enqueue(this)
-            tmdbService = context.tmdbService
         } else {
             throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
         }
@@ -81,6 +76,7 @@ class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(httpClientBuilder.build())
             .build()
 
@@ -92,10 +88,10 @@ class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
         val maxDate = DateFormat.format("yyyy-MM-dd", now).toString()
         val minDate = DateFormat.format("yyyy-MM-dd", before).toString()
 
-        tmdbService?.getRecentMovies(
+        tmdbService.getRecentMovies(
             minDate,
             maxDate
-        )?.enqueue(this)
+        ).enqueue(this)
     }
 
     override fun onDetach() {
@@ -104,15 +100,14 @@ class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
     }
 
     override fun onResponse(call: Call<TmdbResult>, response: Response<TmdbResult>) {
-        if (recycler != null) {
-            with(recycler!!) {
-                layoutManager = LinearLayoutManager(context)
-                adapter =
-                    RecentMoviesRecyclerViewAdapter(
-                        response.body()!!.results,
-                        listener
-                    )
-            }
+        with(recycler) {
+            layoutManager = LinearLayoutManager(context)
+            adapter =
+                RecentMoviesRecyclerViewAdapter(
+                    context,
+                    response.body()!!.results,
+                    listener
+                )
         }
     }
 
