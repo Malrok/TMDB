@@ -12,7 +12,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class TMDBApplication : Application( ), HasActivityInjector, HasSupportFragmentInjector {
+class TMDBApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
 
     @Inject
     lateinit var dispatchingAndroidActivityInjector: DispatchingAndroidInjector<Activity>
@@ -35,18 +35,22 @@ class TMDBApplication : Application( ), HasActivityInjector, HasSupportFragmentI
 
     private fun initializeDebugConfiguration() {
         Timber.plant(Timber.DebugTree())
-        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
-            .detectDiskReads()
-            .detectDiskWrites()
-            .detectAll()
-            .penaltyLog()
-            .build())
-        StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-            .detectLeakedSqlLiteObjects()
-            .detectLeakedClosableObjects()
-            .penaltyLog()
-            .penaltyDeath()
-            .build())
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        )
+        StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build()
+        )
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

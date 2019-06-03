@@ -3,40 +3,38 @@ package com.moventes.moventest.tmdb.fragments.recentmovies
 import android.content.Context
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
+import com.moventes.moventest.tmdb.fragments.DaggeredFragment
 import com.moventes.moventest.tmdb.models.Movie
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.network.TmdbService
-import dagger.android.support.AndroidSupportInjection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 
-class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
-
-    private var listener: OnListFragmentInteractionListener? = null
-    private lateinit var recycler: RecyclerView
+class RecentMoviesFragment : DaggeredFragment(), Callback<TmdbResult> {
 
     @Inject
     lateinit var tmdbService: TmdbService
 
+    private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var recycler: RecyclerView
+
     override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
         super.onAttach(context)
         if (context is MainActivity) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
         }
     }
 
@@ -55,34 +53,6 @@ class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
     }
 
     fun fillList() {
-
-//        val httpClientBuilder = OkHttpClient.Builder()
-//
-//        httpClientBuilder.addInterceptor { chain ->
-//            val original = chain.request()
-//            val originalHttpUrl = original.url()
-//
-//            val url = originalHttpUrl.newBuilder()
-//                .addQueryParameter("api_key", "48d02d2803f669be5643367e3307dd43")
-//                .build()
-//
-//            // Request customization: add request headers
-//            val requestBuilder = original.newBuilder()
-//                .url(url)
-//
-//            val request = requestBuilder.build()
-//            chain.proceed(request)
-//        }
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl("https://api.themoviedb.org/3/")
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-//            .client(httpClientBuilder.build())
-//            .build()
-//
-//        tmdbService = retrofit.create<TmdbService>(TmdbService::class.java)
-
         val now = Calendar.getInstance()
         val before = Calendar.getInstance()
         before.add(Calendar.DAY_OF_MONTH, -30)
@@ -113,7 +83,7 @@ class RecentMoviesFragment : Fragment(), Callback<TmdbResult> {
     }
 
     override fun onFailure(call: Call<TmdbResult>, t: Throwable) {
-        Log.d("onFailure", "error")
+        Timber.d("error")
     }
 
     interface OnListFragmentInteractionListener {

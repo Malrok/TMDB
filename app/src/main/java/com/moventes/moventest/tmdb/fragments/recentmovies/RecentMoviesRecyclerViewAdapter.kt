@@ -14,7 +14,6 @@ import com.moventes.moventest.tmdb.fragments.recentmovies.RecentMoviesFragment.O
 import com.moventes.moventest.tmdb.models.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_recent_movie_item.view.*
-import javax.inject.Inject
 
 class RecentMoviesRecyclerViewAdapter(
     private var context: Context,

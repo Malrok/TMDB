@@ -4,11 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.moventes.moventest.tmdb.fragments.recentmovies.RecentMoviesFragment
 import com.moventes.moventest.tmdb.models.Movie
-import com.moventes.moventest.tmdb.network.TmdbService
-import dagger.android.support.AndroidSupportInjection
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity(), RecentMoviesFragment.OnListFragmentInteractionListener {
