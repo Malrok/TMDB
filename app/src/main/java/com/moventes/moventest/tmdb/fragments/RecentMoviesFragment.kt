@@ -1,4 +1,4 @@
-package com.moventes.moventest.tmdb.fragments.recentmovies
+package com.moventes.moventest.tmdb.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
-import com.moventes.moventest.tmdb.fragments.DaggeredFragment
-import com.moventes.moventest.tmdb.fragments.OnListFragmentInteractionListener
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.network.TmdbService
 import retrofit2.Call

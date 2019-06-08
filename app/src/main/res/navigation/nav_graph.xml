@@ -4,9 +4,9 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/recent_fragment">
     <fragment android:id="@+id/recent_fragment"
-              android:name="com.moventes.moventest.tmdb.fragments.recentmovies.RecentMoviesFragment"
+              android:name="com.moventes.moventest.tmdb.fragments.RecentMoviesFragment"
               android:label="fragment_recent_movies_list" tools:layout="@layout/fragment_recent_movies_list"/>
     <fragment android:id="@+id/search_fragment"
-              android:name="com.moventes.moventest.tmdb.fragments.searchmovie.SearchMovieFragment"
+              android:name="com.moventes.moventest.tmdb.fragments.SearchMovieFragment"
               android:label="fragment_search_movie_list" tools:layout="@layout/fragment_search_movie_list"/>
 </navigation>

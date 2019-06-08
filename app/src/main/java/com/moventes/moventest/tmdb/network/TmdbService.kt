@@ -15,4 +15,6 @@ interface TmdbService {
     @GET("discover/movie")
     fun getRecentMovies(@Query("primary_release_date.gte") minDate: String, @Query("primary_release_date.lte") maxDate: String): Call<TmdbResult>
 
+    @GET("search/movie")
+    fun getMoviesListByTitle(@Query("query") title: String): Call<TmdbResult>
 }

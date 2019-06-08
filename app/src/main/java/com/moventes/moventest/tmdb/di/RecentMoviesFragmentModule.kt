@@ -1,6 +1,6 @@
 package com.moventes.moventest.tmdb.di
 
-import com.moventes.moventest.tmdb.fragments.recentmovies.RecentMoviesFragment
+import com.moventes.moventest.tmdb.fragments.RecentMoviesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -13,11 +13,11 @@ import com.moventes.moventest.tmdb.R
 import com.moventes.moventest.tmdb.fragments.OnListFragmentInteractionListener
 import com.moventes.moventest.tmdb.models.Movie
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_recent_movie_item.view.*
+import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesRecyclerViewAdapter(
     private var context: Context,
-    private val movies: List<Movie>,
+    private var movies: List<Movie>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
@@ -32,7 +32,7 @@ class MoviesRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_recent_movie_item, parent, false)
+            .inflate(R.layout.movie_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -50,6 +50,10 @@ class MoviesRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = movies.size
+
+    fun updateMoviesList(list: List<Movie>) {
+        movies = list
+    }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val poster: ImageView = mView.poster

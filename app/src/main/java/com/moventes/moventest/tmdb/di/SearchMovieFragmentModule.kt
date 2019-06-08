@@ -1,6 +1,6 @@
 package com.moventes.moventest.tmdb.di
 
-import com.moventes.moventest.tmdb.fragments.searchmovie.SearchMovieFragment
+import com.moventes.moventest.tmdb.fragments.SearchMovieFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
