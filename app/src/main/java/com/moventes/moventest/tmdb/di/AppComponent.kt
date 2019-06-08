@@ -14,6 +14,7 @@ import dagger.android.AndroidInjectionModule
         (AppModule::class),
         (MainActivityModule::class),
         (RecentMoviesFragmentModule::class),
+        (SearchMovieFragmentModule::class),
         (RetrofitModule::class)
     ]
 )

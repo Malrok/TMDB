@@ -9,8 +9,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
+import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.fragments.DaggeredFragment
-import com.moventes.moventest.tmdb.models.Movie
+import com.moventes.moventest.tmdb.fragments.OnListFragmentInteractionListener
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.network.TmdbService
 import retrofit2.Call
@@ -74,7 +75,7 @@ class RecentMoviesFragment : DaggeredFragment(), Callback<TmdbResult> {
         with(recycler) {
             layoutManager = LinearLayoutManager(context)
             adapter =
-                RecentMoviesRecyclerViewAdapter(
+                MoviesRecyclerViewAdapter(
                     context,
                     response.body()!!.results,
                     listener
@@ -84,10 +85,6 @@ class RecentMoviesFragment : DaggeredFragment(), Callback<TmdbResult> {
 
     override fun onFailure(call: Call<TmdbResult>, t: Throwable) {
         Timber.d("error")
-    }
-
-    interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(movie: Movie)
     }
 
     companion object {

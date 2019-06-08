@@ -1,4 +1,4 @@
-package com.moventes.moventest.tmdb.fragments.recentmovies
+package com.moventes.moventest.tmdb.adapters
 
 
 import android.content.Context
@@ -10,16 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.R
-import com.moventes.moventest.tmdb.fragments.recentmovies.RecentMoviesFragment.OnListFragmentInteractionListener
+import com.moventes.moventest.tmdb.fragments.OnListFragmentInteractionListener
 import com.moventes.moventest.tmdb.models.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_recent_movie_item.view.*
 
-class RecentMoviesRecyclerViewAdapter(
+class MoviesRecyclerViewAdapter(
     private var context: Context,
     private val movies: List<Movie>,
     private val mListener: OnListFragmentInteractionListener?
-) : RecyclerView.Adapter<RecentMoviesRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 

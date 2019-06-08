@@ -3,13 +3,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/action_android"
+            android:id="@+id/recent_fragment"
             android:enabled="true"
             android:icon="@drawable/ic_movie"
             android:title="@string/bottom_navigation_menu_recent"
             app:showAsAction="ifRoom"/>
     <item
-            android:id="@+id/action_logo"
+            android:id="@+id/search_fragment"
             android:enabled="true"
             android:icon="@drawable/ic_search"
             android:title="@string/bottom_navigation_menu_search"
