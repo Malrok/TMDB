@@ -1,6 +1,7 @@
 package com.moventes.moventest.tmdb.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.moventes.moventest.tmdb.BuildConfig
 import com.moventes.moventest.tmdb.network.TmdbService
 import dagger.Module
 import dagger.Provides
@@ -38,7 +39,7 @@ class RetrofitModule {
             val originalHttpUrl = original.url()
 
             val url = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key", "48d02d2803f669be5643367e3307dd43")
+                .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
                 .build()
 
             // Request customization: add request headers
