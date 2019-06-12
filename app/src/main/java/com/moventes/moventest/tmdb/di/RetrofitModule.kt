@@ -5,6 +5,7 @@ import com.moventes.moventest.tmdb.BuildConfig
 import com.moventes.moventest.tmdb.network.TmdbService
 import dagger.Module
 import dagger.Provides
+import me.alfredobejarano.retrofitadapters.LiveDataAdapter
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,6 +26,7 @@ class RetrofitModule {
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .addCallAdapterFactory(LiveDataAdapter.Factory())
             .client(httpClientBuilder.build())
             .build()
     }
