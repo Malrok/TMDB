@@ -10,10 +10,18 @@ import java.util.*
 import javax.inject.Inject
 
 class RecentMoviesViewModel @Inject constructor(
-    val tmdbService: TmdbService
+    var tmdbService: TmdbService
 ) : ViewModel() {
 
+    private val result: LiveData<ApiResult<TmdbResult>> by lazy {
+        loadMovies()
+    }
+
     fun getMovies(): LiveData<ApiResult<TmdbResult>> {
+        return result
+    }
+
+    private fun loadMovies(): LiveData<ApiResult<TmdbResult>> {
         val now = Calendar.getInstance()
         val before = Calendar.getInstance()
         before.add(Calendar.DAY_OF_MONTH, -30)

@@ -14,18 +14,14 @@ import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.R
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.TmdbResult
-import com.moventes.moventest.tmdb.network.TmdbService
+import com.moventes.moventest.tmdb.viewmodels.SearchMovieViewModel
 import kotlinx.android.synthetic.main.fragment_search_movie_list.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
 import javax.inject.Inject
 
-class SearchMovieFragment : DaggeredFragment(), Callback<TmdbResult> {
+class SearchMovieFragment : DaggeredFragment() {
 
     @Inject
-    lateinit var tmdbService: TmdbService
+    lateinit var viewmodel: SearchMovieViewModel
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var recycler: RecyclerView
@@ -57,6 +53,15 @@ class SearchMovieFragment : DaggeredFragment(), Callback<TmdbResult> {
         )
         recycler.adapter = adapter
 
+        viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<TmdbResult> { call ->
+            run {
+                with(recycler) {
+                    (adapter as MoviesRecyclerViewAdapter).updateMoviesList(call.results)
+                    (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+                }
+            }
+        })
+
         return view
     }
 
@@ -71,19 +76,15 @@ class SearchMovieFragment : DaggeredFragment(), Callback<TmdbResult> {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                tmdbService.getMoviesListByTitle(s.toString()).enqueue(this@SearchMovieFragment)
+                viewmodel.searchMovie(s.toString())
             }
 
         })
     }
 
-    override fun onResponse(call: Call<TmdbResult>, response: Response<TmdbResult>) {
-        adapter.updateMoviesList(response.body()!!.results)
-        adapter.notifyDataSetChanged()
-    }
-
-    override fun onFailure(call: Call<TmdbResult>, t: Throwable) {
-        Timber.d("error")
+    override fun onDetach() {
+        listener = null
+        super.onDetach()
     }
 
 }

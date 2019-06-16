@@ -51,8 +51,10 @@ class MoviesRecyclerViewAdapter(
 
     override fun getItemCount(): Int = movies.size
 
-    fun updateMoviesList(list: List<Movie>) {
-        movies = list
+    fun updateMoviesList(list: List<Movie>?) {
+        if (list != null) {
+            movies = list
+        }
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
