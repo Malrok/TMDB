@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import me.alfredobejarano.retrofitadapters.LiveDataAdapter
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -38,7 +39,7 @@ class RetrofitModule {
 
         httpClientBuilder.addInterceptor { chain ->
             val original = chain.request()
-            val originalHttpUrl = original.url()
+            val originalHttpUrl = original.url
 
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
@@ -51,6 +52,12 @@ class RetrofitModule {
             val request = requestBuilder.build()
             chain.proceed(request)
         }
+
+        val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            this.level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        httpClientBuilder.addInterceptor(interceptor)
 
         return httpClientBuilder
     }
