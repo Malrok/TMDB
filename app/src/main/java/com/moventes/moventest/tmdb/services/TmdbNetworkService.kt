@@ -1,4 +1,4 @@
-package com.moventes.moventest.tmdb.network
+package com.moventes.moventest.tmdb.services
 
 import androidx.lifecycle.LiveData
 import com.moventes.moventest.tmdb.models.Configuration
@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 
-interface TmdbService {
+interface TmdbNetworkService {
 
     @GET("configuration")
     fun getConfig(): LiveData<ApiResult<Configuration>>

@@ -14,6 +14,7 @@ import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.R
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.TmdbResult
+import com.moventes.moventest.tmdb.services.TmdbConfigurationService
 import com.moventes.moventest.tmdb.viewmodels.SearchMovieViewModel
 import kotlinx.android.synthetic.main.fragment_search_movie_list.view.*
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class SearchMovieFragment : DaggeredFragment() {
 
     @Inject
     lateinit var viewmodel: SearchMovieViewModel
+
+    @Inject
+    lateinit var tmdbConfigurationService: TmdbConfigurationService
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var recycler: RecyclerView
@@ -46,11 +50,18 @@ class SearchMovieFragment : DaggeredFragment() {
         // Set the adapter
         recycler = view.list
         recycler.layoutManager = LinearLayoutManager(context)
-        adapter = MoviesRecyclerViewAdapter(
-            context!!,
-            ArrayList(),
-            listener
-        )
+
+        tmdbConfigurationService.configuration.observe(this, androidx.lifecycle.Observer { configuration ->
+            run {
+                adapter = MoviesRecyclerViewAdapter(
+                    context!!,
+                    emptyList(),
+                    listener,
+                    configuration.body!!
+                )
+            }
+        })
+
         recycler.adapter = adapter
 
         viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<TmdbResult> { call ->

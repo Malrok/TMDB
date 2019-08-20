@@ -4,13 +4,13 @@ import android.text.format.DateFormat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.moventes.moventest.tmdb.models.TmdbResult
-import com.moventes.moventest.tmdb.network.TmdbService
+import com.moventes.moventest.tmdb.services.TmdbNetworkService
 import me.alfredobejarano.retrofitadapters.data.ApiResult
 import java.util.*
 import javax.inject.Inject
 
 class RecentMoviesViewModel @Inject constructor(
-    var tmdbService: TmdbService
+    var tmdbService: TmdbNetworkService
 ) : ViewModel() {
 
     private val result: LiveData<ApiResult<TmdbResult>> by lazy {

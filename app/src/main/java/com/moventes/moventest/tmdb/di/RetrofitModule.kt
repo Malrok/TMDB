@@ -2,7 +2,7 @@ package com.moventes.moventest.tmdb.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.moventes.moventest.tmdb.BuildConfig
-import com.moventes.moventest.tmdb.network.TmdbService
+import com.moventes.moventest.tmdb.services.TmdbNetworkService
 import dagger.Module
 import dagger.Provides
 import me.alfredobejarano.retrofitadapters.LiveDataAdapter
@@ -15,8 +15,8 @@ class RetrofitModule {
 
     @Provides
     @ApplicationScope
-    fun getTmdbService(retrofit: Retrofit): TmdbService {
-        return retrofit.create<TmdbService>(TmdbService::class.java)
+    fun getTmdbService(retrofit: Retrofit): TmdbNetworkService {
+        return retrofit.create(TmdbNetworkService::class.java)
     }
 
     @Provides

@@ -2,7 +2,7 @@ package com.moventes.moventest.tmdb.di
 
 import android.app.Application
 import com.moventes.moventest.tmdb.TMDBApplication
-import com.moventes.moventest.tmdb.network.TmdbService
+import com.moventes.moventest.tmdb.services.TmdbNetworkService
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -15,7 +15,8 @@ import dagger.android.AndroidInjectionModule
         (MainActivityModule::class),
         (RecentMoviesFragmentModule::class),
         (SearchMovieFragmentModule::class),
-        (RetrofitModule::class)
+        (RetrofitModule::class),
+        (TmdbConfigurationModule::class)
     ]
 )
 interface AppComponent {
@@ -27,7 +28,7 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun getTmdbService(): TmdbService
+    fun getTmdbService(): TmdbNetworkService
 
     fun inject(tmdbApp: TMDBApplication)
 }

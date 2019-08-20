@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.R
 import com.moventes.moventest.tmdb.fragments.OnListFragmentInteractionListener
+import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.models.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_item.view.*
@@ -18,7 +19,8 @@ import kotlinx.android.synthetic.main.movie_item.view.*
 class MoviesRecyclerViewAdapter(
     private var context: Context,
     private var movies: List<Movie>,
-    private val mListener: OnListFragmentInteractionListener?
+    private val mListener: OnListFragmentInteractionListener?,
+    private val configuration: Configuration
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -41,7 +43,9 @@ class MoviesRecyclerViewAdapter(
         holder.title.text = item.title
         holder.description.text = DateUtils.formatDateTime(context, item.release.time, DateUtils.FORMAT_SHOW_DATE)
 
-        Picasso.get().load(item.posterPath).into(holder.poster)
+        val posterPath = "${configuration.imageBaseUrl}${configuration.posterSizes[0]}${item.posterPath}"
+
+        Picasso.get().load(posterPath).into(holder.poster)
 
         with(holder.mView) {
             tag = item

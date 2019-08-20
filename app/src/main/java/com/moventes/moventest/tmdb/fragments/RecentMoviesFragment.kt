@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.TmdbResult
+import com.moventes.moventest.tmdb.services.TmdbConfigurationService
 import com.moventes.moventest.tmdb.viewmodels.RecentMoviesViewModel
 import me.alfredobejarano.retrofitadapters.data.ApiResult
 import javax.inject.Inject
@@ -21,6 +22,9 @@ class RecentMoviesFragment : DaggeredFragment() {
 
     @Inject
     lateinit var viewmodel: RecentMoviesViewModel
+
+    @Inject
+    lateinit var tmdbConfigurationService: TmdbConfigurationService
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,12 +46,16 @@ class RecentMoviesFragment : DaggeredFragment() {
             recycler = view
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
-                adapter =
-                    MoviesRecyclerViewAdapter(
-                        context,
-                        ArrayList(),
-                        listener
-                    )
+                tmdbConfigurationService.configuration.observe(this@RecentMoviesFragment, androidx.lifecycle.Observer { configuration ->
+                    run {
+                        adapter = MoviesRecyclerViewAdapter(
+                            context,
+                            emptyList(),
+                            listener,
+                            configuration.body!!
+                        )
+                    }
+                })
             }
             viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<ApiResult<TmdbResult>> { result ->
                 run {
