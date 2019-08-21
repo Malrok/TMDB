@@ -30,6 +30,10 @@ android {
         it.resValue 'string', "api_key", tmdbApiKey
 
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
