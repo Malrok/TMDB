@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
+import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.services.TmdbConfigurationService
 import com.moventes.moventest.tmdb.viewmodels.RecentMoviesViewModel
@@ -44,16 +45,27 @@ class RecentMoviesFragment : DaggeredFragment() {
         // Set the adapter
         if (view is RecyclerView) {
             recycler = view
+
+            // TODO:
+            //      enchainer les livedata "genre" pipe ?!
+            //      trouver pourquoi la configuration revient à vide
+
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
-                tmdbConfigurationService.configuration.observe(this@RecentMoviesFragment, androidx.lifecycle.Observer { configuration ->
+                tmdbConfigurationService.configuration.observe(this@RecentMoviesFragment, androidx.lifecycle.Observer<ApiResult<Configuration>> { result ->
                     run {
-                        adapter = MoviesRecyclerViewAdapter(
-                            context,
-                            emptyList(),
-                            listener,
-                            configuration.body!!
-                        )
+                        if (result.error != null) {
+
+                        } else {
+                            if (result.body?.imageBaseUrl != null) {
+                                adapter = MoviesRecyclerViewAdapter(
+                                    context,
+                                    emptyList(),
+                                    listener,
+                                    result.body!!
+                                )
+                            }
+                        }
                     }
                 })
             }
@@ -62,10 +74,11 @@ class RecentMoviesFragment : DaggeredFragment() {
                     if (result.error != null) {
 
                     } else {
-
                         with(recycler) {
-                            (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.body?.results)
-                            (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+                            if (adapter != null) {
+                                (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.body?.results)
+                                (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+                            }
                         }
                     }
                 }
