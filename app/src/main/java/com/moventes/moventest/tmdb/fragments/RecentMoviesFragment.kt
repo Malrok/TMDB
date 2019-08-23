@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
@@ -12,6 +13,7 @@ import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.services.TmdbConfigurationService
+import com.moventes.moventest.tmdb.tools.combineWith
 import com.moventes.moventest.tmdb.viewmodels.RecentMoviesViewModel
 import me.alfredobejarano.retrofitadapters.data.ApiResult
 import javax.inject.Inject
@@ -50,39 +52,93 @@ class RecentMoviesFragment : DaggeredFragment() {
             //      enchainer les livedata "genre" pipe ?!
             //      trouver pourquoi la configuration revient à vide
 
+//            with(recycler) {
+//                layoutManager = LinearLayoutManager(context)
+//                tmdbConfigurationService.configuration.observe(this@RecentMoviesFragment, androidx.lifecycle.Observer<ApiResult<Configuration>> { result ->
+//                    run {
+//                        if (result.error != null) {
+//
+//                        } else {
+//                            if (result.body?.imageBaseUrl != null) {
+//                                adapter = MoviesRecyclerViewAdapter(
+//                                    context,
+//                                    emptyList(),
+//                                    listener,
+//                                    result.body!!
+//                                )
+//                            }
+//                        }
+//                    }
+//                })
+//            }
+//            viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<ApiResult<TmdbResult>> { result ->
+//                run {
+//                    if (result.error != null) {
+//
+//                    } else {
+//                        with(recycler) {
+//                            if (adapter != null) {
+//                                (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.body?.results)
+//                                (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+//                            }
+//                        }
+//                    }
+//                }
+//            })
+
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
-                tmdbConfigurationService.configuration.observe(this@RecentMoviesFragment, androidx.lifecycle.Observer<ApiResult<Configuration>> { result ->
-                    run {
-                        if (result.error != null) {
 
-                        } else {
-                            if (result.body?.imageBaseUrl != null) {
-                                adapter = MoviesRecyclerViewAdapter(
-                                    context,
-                                    emptyList(),
-                                    listener,
-                                    result.body!!
-                                )
-                            }
-                        }
+                tmdbConfigurationService.configuration.combineWith(viewmodel.getMovies()) { configurationResult, moviesResult ->
+                    if (configurationResult?.error != null) {
+
                     }
-                })
-            }
-            viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<ApiResult<TmdbResult>> { result ->
-                run {
-                    if (result.error != null) {
+                    if (moviesResult?.error != null) {
 
-                    } else {
-                        with(recycler) {
-                            if (adapter != null) {
-                                (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.body?.results)
-                                (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
-                            }
-                        }
+                    }
+                    adapter = MoviesRecyclerViewAdapter(
+                        context,
+                        emptyList(),
+                        listener,
+                        configurationResult?.body!!
+                    )
+                    if (adapter != null) {
+                        (adapter as MoviesRecyclerViewAdapter).updateMoviesList(moviesResult?.body?.results)
+                        (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
                     }
                 }
-            })
+
+//                tmdbConfigurationService.configuration.observe(this@RecentMoviesFragment, androidx.lifecycle.Observer<ApiResult<Configuration>> { result ->
+//                    run {
+//                        if (result.error != null) {
+//
+//                        } else {
+//                            if (result.body?.imageBaseUrl != null) {
+//                                adapter = MoviesRecyclerViewAdapter(
+//                                    context,
+//                                    emptyList(),
+//                                    listener,
+//                                    result.body!!
+//                                )
+//                            }
+//                        }
+//                    }
+//                })
+            }
+//            viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<ApiResult<TmdbResult>> { result ->
+//                run {
+//                    if (result.error != null) {
+//
+//                    } else {
+//                        with(recycler) {
+//                            if (adapter != null) {
+//                                (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.body?.results)
+//                                (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+//                            }
+//                        }
+//                    }
+//                }
+//            })
         }
 
         return view
