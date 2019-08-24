@@ -32,7 +32,6 @@ class SearchMovieFragment : DaggeredFragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var recycler: RecyclerView
-    private lateinit var adapter: MoviesRecyclerViewAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
