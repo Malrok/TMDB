@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.R
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
+import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.models.TmdbResult
 import com.moventes.moventest.tmdb.services.TmdbConfigurationService
+import com.moventes.moventest.tmdb.tools.CombinedLiveData2
 import com.moventes.moventest.tmdb.viewmodels.SearchMovieViewModel
 import kotlinx.android.synthetic.main.fragment_search_movie_list.view.*
+import me.alfredobejarano.retrofitadapters.data.ApiResult
 import javax.inject.Inject
 
 class SearchMovieFragment : DaggeredFragment() {
@@ -49,29 +52,31 @@ class SearchMovieFragment : DaggeredFragment() {
 
         // Set the adapter
         recycler = view.list
-        recycler.layoutManager = LinearLayoutManager(context)
 
-        tmdbConfigurationService.configuration.observe(this, androidx.lifecycle.Observer { configuration ->
-            run {
-                adapter = MoviesRecyclerViewAdapter(
-                    context!!,
-                    emptyList(),
-                    listener,
-                    configuration.body!!
-                )
-            }
-        })
+        with(recycler) {
+            layoutManager = LinearLayoutManager(context)
 
-        recycler.adapter = adapter
-
-        viewmodel.getMovies().observe(this, androidx.lifecycle.Observer<TmdbResult> { call ->
-            run {
-                with(recycler) {
-                    (adapter as MoviesRecyclerViewAdapter).updateMoviesList(call.results)
-                    (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
-                }
-            }
-        })
+            CombinedLiveData2(tmdbConfigurationService.configuration, viewmodel.getMovies())
+                .observe(
+                    this@SearchMovieFragment,
+                    androidx.lifecycle.Observer<Pair<ApiResult<Configuration>, TmdbResult>> { result ->
+                        run {
+                            if (result.first.error != null) {
+                                return@Observer
+                            }
+                            adapter = MoviesRecyclerViewAdapter(
+                                context,
+                                emptyList(),
+                                listener,
+                                result.first.body!!
+                            )
+                            if (adapter != null) {
+                                (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.second.results)
+                                (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+                            }
+                        }
+                    })
+        }
 
         return view
     }

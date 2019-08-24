@@ -1,8 +1,11 @@
 package com.moventes.moventest.tmdb.di
 
+import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.moventes.moventest.tmdb.BuildConfig
+import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.services.TmdbNetworkService
+import com.moventes.moventest.tmdb.tools.ConfigurationDeserializer
 import dagger.Module
 import dagger.Provides
 import me.alfredobejarano.retrofitadapters.LiveDataAdapter
@@ -10,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 @Module
 class RetrofitModule {
@@ -23,9 +27,13 @@ class RetrofitModule {
     @Provides
     @ApplicationScope
     fun getRetrofit(httpClientBuilder: OkHttpClient.Builder): Retrofit {
+        val gson = GsonBuilder()
+            .registerTypeAdapter(Configuration::class.java, ConfigurationDeserializer())
+            .create()
+
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addCallAdapterFactory(LiveDataAdapter.Factory())
             .client(httpClientBuilder.build())
