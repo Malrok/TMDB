@@ -41,7 +41,6 @@ class TMDBApplication : Application(), HasActivityInjector, HasSupportFragmentIn
             .build()
             .inject(this)
 
-//        tmdbNetworkService.getConfig().enqueue(this)
         tmdbConfigurationService.configuration = tmdbNetworkService.getConfig()
 
         super.onCreate()
