@@ -14,7 +14,7 @@ import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.R
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.Configuration
-import com.moventes.moventest.tmdb.models.TmdbResult
+import com.moventes.moventest.tmdb.models.TmdbListResult
 import com.moventes.moventest.tmdb.services.TmdbConfigurationService
 import com.moventes.moventest.tmdb.tools.CombinedLiveData2
 import com.moventes.moventest.tmdb.viewmodels.SearchMovieViewModel
@@ -58,7 +58,7 @@ class SearchMovieFragment : DaggeredFragment() {
             CombinedLiveData2(tmdbConfigurationService.configuration, viewmodel.getMovies())
                 .observe(
                     this@SearchMovieFragment,
-                    androidx.lifecycle.Observer<Pair<ApiResult<Configuration>, TmdbResult>> { result ->
+                    androidx.lifecycle.Observer<Pair<ApiResult<Configuration>, TmdbListResult>> { result ->
                         run {
                             if (result.first.error != null) {
                                 return@Observer

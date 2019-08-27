@@ -5,5 +5,17 @@
             app:startDestination="@id/bottomNavFragment">
 
     <fragment android:id="@+id/bottomNavFragment" android:name="com.moventes.moventest.tmdb.fragments.BottomNavFragment"
-              android:label="fragment_bottom_nav" tools:layout="@layout/fragment_bottom_nav"/>
+              android:label="fragment_bottom_nav" tools:layout="@layout/fragment_bottom_nav">
+        <action
+                android:id="@+id/action_bottomNavFragment_to_movieDetailFagment"
+                app:destination="@id/movieDetailFagment" />
+    </fragment>
+    <fragment
+            android:id="@+id/movieDetailFagment"
+            android:name="com.moventes.moventest.tmdb.fragments.MovieDetailFragment"
+            android:label="MovieDetailFagment">
+        <argument
+                android:name="movieId"
+                app:argType="string" />
+    </fragment>
 </navigation>

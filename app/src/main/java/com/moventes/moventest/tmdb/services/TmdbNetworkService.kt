@@ -2,6 +2,7 @@ package com.moventes.moventest.tmdb.services
 
 import androidx.lifecycle.LiveData
 import com.moventes.moventest.tmdb.models.Configuration
+import com.moventes.moventest.tmdb.models.TmdbListResult
 import com.moventes.moventest.tmdb.models.TmdbResult
 import me.alfredobejarano.retrofitadapters.data.ApiResult
 import retrofit2.Call
@@ -15,8 +16,11 @@ interface TmdbNetworkService {
     fun getConfig(): LiveData<ApiResult<Configuration>>
 
     @GET("discover/movie")
-    fun getRecentMovies(@Query("primary_release_date.gte") minDate: String, @Query("primary_release_date.lte") maxDate: String): LiveData<ApiResult<TmdbResult>>
+    fun getRecentMovies(@Query("primary_release_date.gte") minDate: String, @Query("primary_release_date.lte") maxDate: String): LiveData<ApiResult<TmdbListResult>>
 
     @GET("search/movie")
-    fun getMoviesListByTitle(@Query("query") title: String): Call<TmdbResult>
+    fun getMoviesListByTitle(@Query("query") title: String): Call<TmdbListResult>
+
+    @GET("movie")
+    fun getMovieById(@Query("movieId") movieId: String): LiveData<ApiResult<TmdbResult>>
 }

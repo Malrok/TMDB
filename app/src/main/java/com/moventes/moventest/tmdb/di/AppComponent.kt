@@ -15,6 +15,7 @@ import dagger.android.AndroidInjectionModule
         (MainActivityModule::class),
         (RecentMoviesFragmentModule::class),
         (SearchMovieFragmentModule::class),
+        (MovieDetailFragmentModule::class),
         (RetrofitModule::class),
         (TmdbConfigurationModule::class)
     ]

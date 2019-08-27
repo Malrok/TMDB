@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.Configuration
-import com.moventes.moventest.tmdb.models.TmdbResult
+import com.moventes.moventest.tmdb.models.TmdbListResult
 import com.moventes.moventest.tmdb.services.TmdbConfigurationService
 import com.moventes.moventest.tmdb.tools.CombinedLiveData2
 import com.moventes.moventest.tmdb.viewmodels.RecentMoviesViewModel
@@ -57,7 +58,7 @@ class RecentMoviesFragment : DaggeredFragment() {
                 CombinedLiveData2(tmdbConfigurationService.configuration, viewmodel.getMovies())
                     .observe(
                         this@RecentMoviesFragment,
-                        androidx.lifecycle.Observer<Pair<ApiResult<Configuration>, ApiResult<TmdbResult>>> { result ->
+                        Observer<Pair<ApiResult<Configuration>, ApiResult<TmdbListResult>>> { result ->
                             run {
                                 if (result.first.error != null) {
                                     return@Observer
