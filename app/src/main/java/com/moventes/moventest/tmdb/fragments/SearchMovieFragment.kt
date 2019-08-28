@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moventes.moventest.tmdb.MainActivity
@@ -16,6 +17,7 @@ import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.models.TmdbListResult
 import com.moventes.moventest.tmdb.services.TmdbConfigurationService
+import com.moventes.moventest.tmdb.services.TmdbNetworkService
 import com.moventes.moventest.tmdb.tools.CombinedLiveData2
 import com.moventes.moventest.tmdb.viewmodels.SearchMovieViewModel
 import kotlinx.android.synthetic.main.fragment_search_movie_list.view.*
@@ -24,11 +26,14 @@ import javax.inject.Inject
 
 class SearchMovieFragment : DaggeredFragment() {
 
-    @Inject
-    lateinit var viewmodel: SearchMovieViewModel
+//    @Inject
+//    lateinit var viewmodel: SearchMovieViewModel
 
     @Inject
     lateinit var tmdbConfigurationService: TmdbConfigurationService
+
+    @Inject
+    lateinit var tmdbNetworkService: TmdbNetworkService
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var recycler: RecyclerView
@@ -55,24 +60,20 @@ class SearchMovieFragment : DaggeredFragment() {
         with(recycler) {
             layoutManager = LinearLayoutManager(context)
 
-            CombinedLiveData2(tmdbConfigurationService.configuration, viewmodel.getMovies())
+            tmdbConfigurationService.configuration
                 .observe(
                     this@SearchMovieFragment,
-                    androidx.lifecycle.Observer<Pair<ApiResult<Configuration>, TmdbListResult>> { result ->
+                    androidx.lifecycle.Observer<ApiResult<Configuration>> { result ->
                         run {
-                            if (result.first.error != null) {
+                            if (result.error != null) {
                                 return@Observer
                             }
                             adapter = MoviesRecyclerViewAdapter(
                                 context,
                                 emptyList(),
                                 listener,
-                                result.first.body!!
+                                result.body!!
                             )
-                            if (adapter != null) {
-                                (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.second.results)
-                                (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
-                            }
                         }
                     })
         }
@@ -91,7 +92,22 @@ class SearchMovieFragment : DaggeredFragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewmodel.searchMovie(s.toString())
+                tmdbNetworkService.getMoviesListByTitle(s.toString()).observe(
+                    this@SearchMovieFragment,
+                    Observer<ApiResult<TmdbListResult>> { result ->
+                        run {
+                            if (result.error != null) {
+                                return@Observer
+                            }
+                            with(recycler) {
+                                if (adapter != null) {
+                                    (adapter as MoviesRecyclerViewAdapter).updateMoviesList(result.body!!.results)
+                                    (adapter as MoviesRecyclerViewAdapter).notifyDataSetChanged()
+                                }
+                            }
+                        }
+                    }
+                )
             }
 
         })

@@ -2,20 +2,18 @@ package com.moventes.moventest.tmdb.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.moventes.moventest.tmdb.models.TmdbListResult
 import com.moventes.moventest.tmdb.services.TmdbNetworkService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
+import me.alfredobejarano.retrofitadapters.data.ApiResult
 import javax.inject.Inject
 
 class SearchMovieViewModel @Inject constructor(
     var tmdbService: TmdbNetworkService
-) : ViewModel(), Callback<TmdbListResult> {
+) : ViewModel() {
 
-    private val result = MutableLiveData<TmdbListResult>()
+    /*private val result = MutableLiveData<TmdbListResult>()
 
     fun getMovies(): LiveData<TmdbListResult> {
         return result
@@ -33,6 +31,10 @@ class SearchMovieViewModel @Inject constructor(
         if (response.isSuccessful) {
             result.value = response.body()
         }
+    }*/
+
+    fun searchMovie(title: String): LiveData<ApiResult<TmdbListResult>> {
+        return tmdbService.getMoviesListByTitle(title)
     }
 
 }
