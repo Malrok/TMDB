@@ -2,7 +2,6 @@ package com.moventes.moventest.tmdb.viewmodels
 
 import android.text.format.DateFormat
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import com.moventes.moventest.tmdb.models.TmdbListResult
 import com.moventes.moventest.tmdb.services.TmdbNetworkService
 import me.alfredobejarano.retrofitadapters.data.ApiResult
@@ -10,8 +9,8 @@ import java.util.*
 import javax.inject.Inject
 
 class RecentMoviesViewModel @Inject constructor(
-    var tmdbService: TmdbNetworkService
-) : ViewModel() {
+    override var tmdbService: TmdbNetworkService
+) : BasicViewModel(tmdbService) {
 
     private val listResult: LiveData<ApiResult<TmdbListResult>> by lazy {
         loadMovies()

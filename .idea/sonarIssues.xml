@@ -38,7 +38,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/fragments/SearchMovieFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/fragments/recentmovies/RecentMoviesRecyclerViewAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/services/TmdbNetworkService.kt">
           <value>
             <set />
           </value>
@@ -49,6 +59,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/tools/CombinedLiveData2.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/viewmodels/BasicViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/viewmodels/MovieDetailViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/viewmodels/RecentMoviesViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/moventes/moventest/tmdb/viewmodels/SearchMovieViewModel.kt">
           <value>
             <set />
           </value>

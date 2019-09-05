@@ -12,7 +12,6 @@ import com.moventes.moventest.tmdb.MainActivity
 import com.moventes.moventest.tmdb.adapters.MoviesRecyclerViewAdapter
 import com.moventes.moventest.tmdb.models.Configuration
 import com.moventes.moventest.tmdb.models.TmdbListResult
-import com.moventes.moventest.tmdb.services.TmdbConfigurationService
 import com.moventes.moventest.tmdb.tools.CombinedLiveData2
 import com.moventes.moventest.tmdb.viewmodels.RecentMoviesViewModel
 import me.alfredobejarano.retrofitadapters.data.ApiResult
@@ -25,9 +24,6 @@ class RecentMoviesFragment : DaggeredFragment() {
 
     @Inject
     lateinit var viewmodel: RecentMoviesViewModel
-
-    @Inject
-    lateinit var tmdbConfigurationService: TmdbConfigurationService
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,7 +51,7 @@ class RecentMoviesFragment : DaggeredFragment() {
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
 
-                CombinedLiveData2(tmdbConfigurationService.configuration, viewmodel.getMovies())
+                CombinedLiveData2(viewmodel.getConfig(), viewmodel.getMovies())
                     .observe(
                         this@RecentMoviesFragment,
                         Observer<Pair<ApiResult<Configuration>, ApiResult<TmdbListResult>>> { result ->

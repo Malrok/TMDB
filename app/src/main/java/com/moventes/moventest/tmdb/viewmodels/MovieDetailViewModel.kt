@@ -8,8 +8,8 @@ import me.alfredobejarano.retrofitadapters.data.ApiResult
 import javax.inject.Inject
 
 class MovieDetailViewModel @Inject constructor(
-    var tmdbService: TmdbNetworkService
-) : ViewModel() {
+    override var tmdbService: TmdbNetworkService
+) : BasicViewModel(tmdbService) {
 
     private lateinit var movieId: String
 
